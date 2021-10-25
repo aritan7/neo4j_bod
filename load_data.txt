@@ -1,3 +1,6 @@
+CREATE CONSTRAINT IF NOT EXISTS ON (p:Person) ASSERT p.name IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS ON (c:Company) ASSERT c.name IS UNIQUE;
+
 LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/aritan7/neo4j_bod/main/data/serba_bod.csv" as line
 MERGE(p:Person {name: line.name})
 MERGE(c:Company {name: line.company})
