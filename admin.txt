@@ -1,0 +1,15 @@
+### Neo4j Administration ###
+
+# Create database
+CREATE DATABASE bod1
+
+# Create Users
+CREATE or REPLACE user bod_user1 SET PLAINTEXT PASSWORD "neo4j123" set status active set home database bod1;
+
+# Grant roles
+# Refer to: https://neo4j.com/docs/operations-manual/current/authentication-authorization/built-in-roles/ 
+# Cypher: https://neo4j.com/docs/cypher-manual/current/access-control/built-in-roles/
+GRANT ROLE architect TO bod_user1;
+
+# Logout / Switch user
+:server disconnect
