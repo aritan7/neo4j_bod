@@ -1,0 +1,25 @@
+# One
+Search phrase:
+Find person with name $name
+
+Description:
+Search for people by name
+
+Cyper query:
+Match(p:Person)
+where p.name contains $param1
+return p;
+
+
+
+# Two
+Search phrase:
+Find person with position $title
+
+Description:
+Search for people and related companies by position:
+
+Cypher query:
+MATCH(p:Person)-[r]->(c:Company)
+WHERE toLower(r.position) contains toLower($title)
+return p, r, c
