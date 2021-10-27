@@ -1,0 +1,28 @@
+#0 Find person with the family name of "Siew"
+match(p:Person)
+where p.name contains "Siew"
+return p.name;
+
+#1. Query to find out the board of directors under Ancom Berhad
+match(p:Person)-[dir:IS_DIRECTOR_OF]->(c:Company)
+where c.name = "Ancom Berhad"
+return p.name, dir.position, c.name
+
+
+# 2. Query to find out whose has both director and officer roles in the same company
+match(p:Person)-[r1:IS_DIRECTOR_OF]->(c:Company)
+match(c)<-[r2:IS_OFFICER_OF]-(p:Person)
+return p, r1, r2, c
+
+
+# 3. Query to find out which officer has multiple officer roles (excluding directorship) ,
+# return the company to work with, and its positions
+match(p:Person)-[role:IS_OFFICER_OF]-(c:Company)
+with p.name as name, count(role) as position_count, collect(role.position) as positions, collect(c.name) as companies
+where position_count > 1
+return name, position_count, positions, companies
+order by position_count desc
+
+# 4. Pathfinder: Shortest Path between "Khamis Bin Awal" and "Kalaikovan Antony"
+match path = shortestPath((p1:Person {name: "Khamis Bin Awal"})-[*]-(p2:Person {name: "Kalaikovan Antony"}))
+return path;
