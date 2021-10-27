@@ -1,0 +1,27 @@
+CREATE CONSTRAINT IF NOT EXISTS ON (p:Person) ASSERT p.name IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS ON (c:Company) ASSERT c.name IS UNIQUE;
+
+LOAD CSV WITH HEADERS FROM "file:///neo4j_bod/data/serba_bod.csv" as line
+MERGE(p:Person {name: line.name})
+MERGE(c:Company {name: line.company})
+MERGE(p)-[:IS_DIRECTOR_OF {position: line.position}]->(c);
+
+LOAD CSV WITH HEADERS FROM "file:///neo4j_bod/data/serba_mgmt.csv" as line
+MERGE(p:Person {name: line.name})
+MERGE(c:Company {name: line.company})
+MERGE(p)-[:IS_OFFICER_OF {position: line.position}]->(c);
+
+LOAD CSV WITH HEADERS FROM "file:///neo4j_bod/data/ancom_director.csv" as line
+MERGE(p:Person {name: line.name})
+MERGE(c:Company {name: line.company})
+MERGE(p)-[:IS_DIRECTOR_OF {position: line.position}]->(c);
+
+LOAD CSV WITH HEADERS FROM "file:///neo4j_bod/data/ancom_mgmt.csv" as line
+MERGE(p:Person {name: line.name})
+MERGE(c:Company {name: line.company})
+MERGE(p)-[:IS_OFFICER_OF {position: line.position}]->(c);
+
+LOAD CSV WITH HEADERS FROM "file:///neo4j_bod/data/ancom_subsidiary.csv" as line
+MERGE(sub:Company {name: line.subsidiary})
+MERGE(owner:Company {name: line.listed_company})
+MERGE(owner)-[:OWNS]->(sub);
